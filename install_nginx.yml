@@ -1,0 +1,33 @@
+#install_nginx.yml
+---
+- hosts: webservers
+  user: root
+  tasks:
+
+   - name: Install Nginx 
+     yum:
+       name: nginx 
+       state: latest
+
+   - name: add index.html file
+     template:
+       src: ./index.html
+       dest: /usr/share/nginx/html/index.html
+
+   - name: Start Nginx 
+     service:
+      name: nginx 
+      state: started 
+
+   - name: Nginx listen on port 8080
+     replace:
+             path: /etc/nginx/nginx.conf 
+             regexp: '80 '   
+             replace: "8080 "          
+     notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

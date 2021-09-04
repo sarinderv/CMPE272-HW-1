@@ -1,0 +1,15 @@
+#uninstall_nginx.yml
+---
+- hosts: webservers
+  tasks:
+    - name: "Stop Nginx Services"
+      service:
+        name: nginx
+        state: stopped
+
+    - name: "Uninstall NginX"
+      yum:
+        name: nginx
+        state: absent
+
+    
